@@ -1,6 +1,5 @@
 import { CartProvider } from 'components/cart/cart-context';
 import { Navbar } from 'components/layout/navbar';
-import { WelcomeToast } from 'components/welcome-toast';
 import { GeistSans } from 'geist/font/sans';
 import { getCart } from 'lib/shopify';
 import { ensureStartsWith } from 'lib/utils';
@@ -8,7 +7,7 @@ import { cookies } from 'next/headers';
 import { ReactNode } from 'react';
 import { Toaster } from 'sonner';
 import './globals.css';
-
+import { Analytics } from "@vercel/analytics/react"
 const { TWITTER_CREATOR, TWITTER_SITE, SITE_NAME } = process.env;
 const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
@@ -49,7 +48,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <main>
             {children}
             <Toaster closeButton />
-            <WelcomeToast />
+            <Analytics/>
           </main>
         </CartProvider>
       </body>
