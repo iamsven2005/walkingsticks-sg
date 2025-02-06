@@ -49,6 +49,7 @@ import {
   ShopifyRemoveFromCartOperation,
   ShopifyUpdateCartOperation
 } from './types';
+import { getBlogQuery, getBlogsQuery } from './queries/blog';
 
 const domain = process.env.SHOPIFY_STORE_DOMAIN
   ? ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://')
@@ -355,6 +356,23 @@ export async function getMenu(handle: string): Promise<Menu[]> {
       path: item.url.replace(domain, '').replace('/collections', '/search').replace('/pages', '')
     })) || []
   );
+}
+export async function getBlog(handle: string): Promise<Page> {
+  const res = await shopifyFetch<ShopifyPageOperation>({
+    query: getBlogQuery,
+    cache: 'no-store',
+    variables: { handle }
+  });
+
+  return res.body.data.pageByHandle;
+}
+export async function getBlogs(): Promise<Page[]> {
+  const res = await shopifyFetch<ShopifyPagesOperation>({
+    query: getBlogsQuery,
+    cache: 'no-store'
+  });
+
+  return removeEdgesAndNodes(res.body.data.pages);
 }
 
 export async function getPage(handle: string): Promise<Page> {
