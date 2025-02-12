@@ -1,88 +1,102 @@
-'use client';
+"use client"
 
-import { PlusIcon } from '@heroicons/react/24/outline';
-import clsx from 'clsx';
-import { addItem } from 'components/cart/actions';
-import { useProduct } from 'components/product/product-context';
-import { Product, ProductVariant } from 'lib/shopify/types';
-import { useActionState } from 'react';
-import { useCart } from './cart-context';
+import { ShoppingCartIcon } from "lucide-react"
+import clsx from "clsx"
+import { addItem } from "components/cart/actions"
+import { useProduct } from "components/product/product-context"
+import type { Product, ProductVariant } from "lib/shopify/types"
+import { useActionState, useTransition } from "react"
+import { useCart } from "./cart-context"
+import { Button } from "@/components/ui/button"
+import type React from "react" // Added import for React
+import { useToast } from "@/hooks/use-toast"
 
 function SubmitButton({
   availableForSale,
-  selectedVariantId
+  selectedVariantId,
+  isLoading,
 }: {
-  availableForSale: boolean;
-  selectedVariantId: string | undefined;
+  availableForSale: boolean
+  selectedVariantId: string | undefined
+  isLoading: boolean
 }) {
-  const buttonClasses =
-    'relative flex w-full items-center justify-center rounded-full bg-blue-600 p-4 tracking-wide text-white';
-  const disabledClasses = 'cursor-not-allowed opacity-60 hover:opacity-60';
+  const buttonClasses = clsx("relative w-full", isLoading && "animate-pulse")
 
   if (!availableForSale) {
     return (
-      <button disabled className={clsx(buttonClasses, disabledClasses)}>
+      <Button disabled className={buttonClasses} variant="destructive">
         Out Of Stock
-      </button>
-    );
+      </Button>
+    )
   }
 
-  console.log(selectedVariantId);
   if (!selectedVariantId) {
     return (
-      <button
-        aria-label="Please select an option"
-        disabled
-        className={clsx(buttonClasses, disabledClasses)}
-      >
-        <div className="absolute left-0 ml-4">
-          <PlusIcon className="h-5" />
-        </div>
-        Add To Cart
-      </button>
-    );
+      <Button aria-label="Please select an option" disabled className={buttonClasses}>
+        Select Options
+      </Button>
+    )
   }
 
   return (
-    <button
-      aria-label="Add to cart"
-      className={clsx(buttonClasses, {
-        'hover:opacity-90': true
-      })}
-    >
-      <div className="absolute left-0 ml-4">
-        <PlusIcon className="h-5" />
-      </div>
-      Add To Cart
-    </button>
-  );
+    <Button type="submit" className={buttonClasses} disabled={isLoading}>
+      <ShoppingCartIcon className="mr-2 h-4 w-4" />
+      {isLoading ? "Adding..." : "Add To Cart"}
+    </Button>
+  )
 }
 
 export function AddToCart({ product }: { product: Product }) {
-  const { variants, availableForSale } = product;
-  const { addCartItem } = useCart();
-  const { state } = useProduct();
-  const [message, formAction] = useActionState(addItem, null);
-
+  const { variants, availableForSale } = product
+  const { addCartItem } = useCart()
+  const { state } = useProduct()
+  const [isPending, startTransition] = useTransition()
+  const [message, formAction] = useActionState(addItem, undefined)
+  const {toast} = useToast()
   const variant = variants.find((variant: ProductVariant) =>
-    variant.selectedOptions.every((option) => option.value === state[option.name.toLowerCase()])
-  );
-  const defaultVariantId = variants.length === 1 ? variants[0]?.id : undefined;
-  const selectedVariantId = variant?.id || defaultVariantId;
-  const actionWithVariant = formAction.bind(null, selectedVariantId);
-  const finalVariant = variants.find((variant) => variant.id === selectedVariantId)!;
+    variant.selectedOptions.every((option) => option.value === state[option.name.toLowerCase()]),
+  )
+  const defaultVariantId = variants.length === 1 ? variants[0]?.id : undefined
+  const selectedVariantId = variant?.id || defaultVariantId
+  const finalVariant = variants.find((variant) => variant.id === selectedVariantId)!
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!selectedVariantId) return
+
+    startTransition(async () => {
+      try {
+        // Optimistic update
+        addCartItem(finalVariant, product)
+
+        // Actual action
+        const result = await formAction(selectedVariantId)
+
+        if (result === undefined) {
+          toast({
+            title: "Success",
+            description: "Item added to cart",
+          })
+        } else {
+          throw new Error(result)
+        }
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: error instanceof Error ? error.message : "Failed to add item to cart",
+          variant: "destructive",
+        })
+      }
+    })
+  }
 
   return (
-    <form
-      action={async () => {
-        addCartItem(finalVariant, product);
-        await actionWithVariant();
-      }}
-    >
-      <SubmitButton availableForSale={availableForSale} selectedVariantId={selectedVariantId} />
+    <form onSubmit={handleSubmit}>
+      <SubmitButton availableForSale={availableForSale} selectedVariantId={selectedVariantId} isLoading={isPending} />
       <p aria-live="polite" className="sr-only" role="status">
         {message}
       </p>
     </form>
-  );
+  )
 }
+

@@ -92,7 +92,13 @@ export default function MobileMenu({ menu }: { menu: Menu[] }) {
                     ))}
                   </ul>
                 ) : null}
-              </div>
+                      <div
+                        className="py-2 text-xl text-black transition-colors hover:text-neutral-500 dark:text-white"
+                      >
+                        <Link href={"/blog"} prefetch={true} onClick={closeMobileMenu}>
+                          Help and articles
+                        </Link>
+                      </div>              </div>
             </Dialog.Panel>
           </Transition.Child>
         </Dialog>

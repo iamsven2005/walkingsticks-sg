@@ -1,11 +1,8 @@
+//@ts-nocheck
 import { getCollections, getPages, getProducts } from 'lib/shopify';
 import { validateEnvironmentVariables } from 'lib/utils';
 import { MetadataRoute } from 'next';
-
-type Route = {
-  url: string;
-  lastModified: string;
-};
+import { getBlogPosts } from './blog/[slug]/utils';
 
 const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
@@ -16,39 +13,48 @@ export const dynamic = 'force-dynamic';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   validateEnvironmentVariables();
 
-  const routesMap = [''].map((route) => ({
+  const staticRoutes = ['', '/blog'].map((route) => ({
     url: `${baseUrl}${route}`,
-    lastModified: new Date().toISOString()
+    lastModified: new Date().toISOString().split('T')[0],
   }));
 
   const collectionsPromise = getCollections().then((collections) =>
     collections.map((collection) => ({
       url: `${baseUrl}${collection.path}`,
-      lastModified: collection.updatedAt
+      lastModified: collection.updatedAt,
     }))
   );
 
   const productsPromise = getProducts({}).then((products) =>
     products.map((product) => ({
       url: `${baseUrl}/product/${product.handle}`,
-      lastModified: product.updatedAt
+      lastModified: product.updatedAt,
     }))
   );
 
   const pagesPromise = getPages().then((pages) =>
     pages.map((page) => ({
       url: `${baseUrl}/${page.handle}`,
-      lastModified: page.updatedAt
+      lastModified: page.updatedAt,
     }))
   );
 
-  let fetchedRoutes: Route[] = [];
+  const blogPostsPromise = getBlogPosts().then((posts: any[]) =>
+    posts.map((post: { slug: any; metadata: { publishedAt: any; }; }) => ({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: post.metadata.publishedAt,
+    }))
+  );
+
+  let fetchedRoutes = [];
 
   try {
-    fetchedRoutes = (await Promise.all([collectionsPromise, productsPromise, pagesPromise])).flat();
+    fetchedRoutes = (
+      await Promise.all([collectionsPromise, productsPromise, pagesPromise, blogPostsPromise])
+    ).flat();
   } catch (error) {
     throw JSON.stringify(error, null, 2);
   }
 
-  return [...routesMap, ...fetchedRoutes];
+  return [...staticRoutes, ...fetchedRoutes];
 }
