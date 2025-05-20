@@ -206,7 +206,10 @@ export default function ProductConfigurator() {
   const selectedBody = bodyIndex + 1
 
   // Generate product code from selected components
-const productCode = `${bodies[bodyIndex]?.image.replace("/images/", "").replace(".png", "")}-${heads[headIndex]?.image.replace("/images/", "").replace(".png", "")}`
+let rawCode = `${bodies[bodyIndex]?.image.replace("/images/", "").replace(".png", "")}-${heads[headIndex]?.image.replace("/images/", "").replace(".png", "")}`
+
+// Special case fix
+const productCode = rawCode === "medium-carbonquad-mp3" ? "medium-carbon-quad-mp3" : rawCode
 
   // Fetch product data from API
   useEffect(() => {
