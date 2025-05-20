@@ -53,7 +53,7 @@ export function Carousel({ products }: CarouselProps) {
             className="relative aspect-square h-[30vh] max-h-[275px] w-full flex-none md:w-1/3"
             style={{ width: `${100 / totalProducts}%` }}
           >
-            <Link href={`/product/${product.handle}`} className="relative h-full w-full">
+            <Link href={`/products/${product.handle}`} className="relative h-full w-full">
               <GridTileImage
                 alt={product.title}
                 label={{
