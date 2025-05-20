@@ -1,4 +1,4 @@
-import { formatDate, getBlogPosts } from 'app/blog/[slug]/utils'
+import { formatDate, getBlogPosts } from '../../app/blog/[slug]/utils'
 import Link from 'next/link'
 import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from 'react'
 

@@ -1,9 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
-import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
-import { Quote } from "lucide-react"
+import { Carousel, CarouselContent, CarouselItem } from "../../components/ui/carousel"
+import { Card, CardContent, CardDescription, CardTitle } from "../../components/ui/card"
 import Autoplay from "embla-carousel-autoplay"
 
 const testimonials = [

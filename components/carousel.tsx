@@ -1,7 +1,7 @@
 "use client"
 import Link from 'next/link';
 import { GridTileImage } from './grid/tile';
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem } from '../components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 
 export function Carousels({products}: any) {

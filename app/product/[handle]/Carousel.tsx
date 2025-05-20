@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { GridTileImage } from 'components/grid/tile';
+import { GridTileImage } from '../../../components/grid/tile';
 
 interface CarouselProps {
   products: any[];

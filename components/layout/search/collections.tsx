@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import { Suspense } from 'react';
 
-import { getCollections } from 'lib/shopify';
 import FilterList from './filter';
+import { getCollections } from '../../../lib/shopify';
 
 async function CollectionList() {
   const collections = await getCollections();

@@ -1,6 +1,6 @@
-import CartModal from 'components/cart/modal';
-import { getMenu } from 'lib/shopify';
-import { Menu } from 'lib/shopify/types';
+import CartModal from '../../../components/cart/modal';
+import { getMenu } from '../../../lib/shopify';
+import { Menu } from '../../../lib/shopify/types';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import MobileMenu from './mobile-menu';

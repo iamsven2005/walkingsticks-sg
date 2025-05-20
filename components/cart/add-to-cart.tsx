@@ -2,14 +2,14 @@
 
 import { ShoppingCartIcon } from "lucide-react"
 import clsx from "clsx"
-import { addItem } from "components/cart/actions"
-import { useProduct } from "components/product/product-context"
-import type { Product, ProductVariant } from "lib/shopify/types"
+import { addItem } from "../../components/cart/actions"
+import { useProduct } from "../../components/product/product-context"
+import type { Product, ProductVariant } from "../../lib/shopify/types"
 import { useActionState, useTransition } from "react"
 import { useCart } from "./cart-context"
-import { Button } from "@/components/ui/button"
+import { Button } from "../../components/ui/button"
 import type React from "react" // Added import for React
-import { useToast } from "@/hooks/use-toast"
+import { useToast } from "../../app/hooks/use-toast"
 
 function SubmitButton({
   availableForSale,

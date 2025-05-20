@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import baseUrl from 'app/sitemap'
+import baseUrl from '../../../app/sitemap'
 import { CustomMDX } from './mdx'
 import { formatDate, getBlogPosts } from './utils'
 import Image from 'next/image'

@@ -1,15 +1,12 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { GridTileImage } from 'components/grid/tile';
-import Footer from 'components/layout/footer';
-import { Gallery } from 'components/product/gallery';
-import { ProductProvider } from 'components/product/product-context';
-import { ProductDescription } from 'components/product/product-description';
-import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
-import { getProduct, getProductRecommendations } from 'lib/shopify';
-import { Image } from 'lib/shopify/types';
-import Link from 'next/link';
+import Footer from '../../../components/layout/footer';
+import { Gallery } from '../../../components/product/gallery';
+import { ProductProvider } from '../../../components/product/product-context';
+import { ProductDescription } from '../../../components/product/product-description';
+import { HIDDEN_PRODUCT_TAG } from '../../../lib/constants';
+import { getProduct, getProductRecommendations } from '../../../lib/shopify';
 import { Suspense } from 'react';
 import { Carousel } from './Carousel';
 
@@ -90,7 +87,12 @@ export default async function ProductPage(props: { params: Promise<{ handle: str
               }
             >
               <Gallery
-                images={product.images.slice(0, 7).map((image: Image) => ({
+                images={product.images.slice(0, 7).map((image:  {
+  url: string;
+  altText: string;
+  width: number;
+  height: number;
+}) => ({
                   src: image.url,
                   altText: image.altText
                 }))}

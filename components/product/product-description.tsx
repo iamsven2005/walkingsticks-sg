@@ -1,11 +1,11 @@
 "use client"
 
-import { AddToCart } from "components/cart/add-to-cart"
-import Price from "components/price"
-import Prose from "components/prose"
-import type { Product, ProductVariant } from "lib/shopify/types"
+import { AddToCart } from "../../components/cart/add-to-cart"
+import Price from "../../components/price"
+import Prose from "../../components/prose"
+import type { Product, ProductVariant } from "../../lib/shopify/types"
 import { VariantSelector } from "./variant-selector"
-import { useProduct } from "components/product/product-context"
+import { useProduct } from "../../components/product/product-context"
 import { useMemo } from "react"
 
 export function ProductDescription({ product }: { product: Product }) {

@@ -1,4 +1,4 @@
-import { BlogPosts } from "app/blog/posts"
+import { BlogPosts } from "../../app/blog/posts"
 import { getBlogPosts } from "./[slug]/utils"
 
 export const metadata = {

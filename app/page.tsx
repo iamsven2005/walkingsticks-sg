@@ -1,11 +1,11 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { Carousels } from "components/carousel"
-import { Testimonials } from "components/grid/testimonial"
-import Footer from "components/layout/footer"
-import { getCollectionProducts } from "lib/shopify"
+import { Card, CardContent } from "../components/ui/card"
+import { Carousels } from "../components/carousel"
+import { Testimonials } from "../components/grid/testimonial"
+import Footer from "../components/layout/footer"
+import { getCollectionProducts } from "../lib/shopify"
 import Image from "next/image"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { Button } from "../components/ui/button"
 import { ArrowRight, HelpCircle } from "lucide-react"
 
 export const metadata = {

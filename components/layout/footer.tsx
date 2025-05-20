@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
-import FooterMenu from 'components/layout/footer-menu';
-import { getMenu } from 'lib/shopify';
+import FooterMenu from '../../components/layout/footer-menu';
+import { getMenu } from '../../lib/shopify';
 import { Suspense } from 'react';
 import Collections from './search/collections';
 

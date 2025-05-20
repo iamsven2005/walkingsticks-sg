@@ -38,12 +38,30 @@ const config: Config = {
   				'100%': {
   					opacity: '0.2'
   				}
+  			},
+  			'accordion-down': {
+  				from: {
+  					height: '0'
+  				},
+  				to: {
+  					height: 'var(--radix-accordion-content-height)'
+  				}
+  			},
+  			'accordion-up': {
+  				from: {
+  					height: 'var(--radix-accordion-content-height)'
+  				},
+  				to: {
+  					height: '0'
+  				}
   			}
   		},
   		animation: {
   			fadeIn: 'fadeIn .3s ease-in-out',
   			carousel: 'marquee 60s linear infinite',
-  			blink: 'blink 1.4s both infinite'
+  			blink: 'blink 1.4s both infinite',
+  			'accordion-down': 'accordion-down 0.2s ease-out',
+  			'accordion-up': 'accordion-up 0.2s ease-out'
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

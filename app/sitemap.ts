@@ -1,8 +1,8 @@
 //@ts-nocheck
-import { getCollections, getPages, getProducts } from 'lib/shopify';
-import { validateEnvironmentVariables } from 'lib/utils';
+import { getCollections, getPages, getProducts } from '../lib/shopify';
 import { MetadataRoute } from 'next';
 import { getBlogPosts } from './blog/[slug]/utils';
+import { validateEnvironmentVariables } from '../lib/utils';
 
 const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`

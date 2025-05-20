@@ -1,8 +1,8 @@
 "use client"
 
 import clsx from "clsx"
-import { useProduct, useUpdateURL } from "components/product/product-context"
-import type { ProductOption, ProductVariant } from "lib/shopify/types"
+import { useProduct, useUpdateURL } from "../../components/product/product-context"
+import type { ProductOption, ProductVariant } from "../../lib/shopify/types"
 
 type Combination = {
   id: string
