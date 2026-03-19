@@ -1,8 +1,8 @@
 "use client"
 
-import { Carousel, CarouselContent, CarouselItem } from "../../components/ui/carousel"
-import { Card, CardContent, CardDescription, CardTitle } from "../../components/ui/card"
 import Autoplay from "embla-carousel-autoplay"
+import { Card, CardContent, CardDescription, CardTitle } from "../../components/ui/card"
+import { Carousel, CarouselContent, CarouselItem } from "../../components/ui/carousel"
 
 const testimonials = [
   {
@@ -26,7 +26,7 @@ const testimonials = [
 export function Testimonials() {
   return (
     <Carousel
-    className="w-full max-w-xs"
+      className="w-full max-w-xs mx-auto"
       plugins={[
         Autoplay({
           delay: 5000,
@@ -41,9 +41,9 @@ export function Testimonials() {
         {testimonials.map((testimonial, index) => (
           <CarouselItem key={index}>
             <Card className="bg-background/50 backdrop-blur-sm">
-              <CardContent className="flex aspect-square items-center justify-center p-6 flex-wrap w-56">
+              <CardContent className="flex aspect-square items-center justify-center p-6 flex-wrap w-56 text-center">
                 <CardDescription className="text-lg mb-4 italic">{testimonial.quote}</CardDescription>
-                <CardTitle className="font-semibold">{testimonial.name}</CardTitle>
+                <CardTitle className="font-semibold w-full">{testimonial.name}</CardTitle>
               </CardContent>
             </Card>
           </CarouselItem>

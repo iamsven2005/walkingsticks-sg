@@ -1,10 +1,12 @@
-import { getCollection, getCollectionProducts } from "../../../lib/shopify"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Grid from "../../../components/grid"
 import ProductGridItems from "../../../components/layout/product-grid-items"
-import { defaultSort, sorting } from "../../../lib/constants"
+import { ShareButton } from "../../../components/share/share-button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../components/ui/card"
+import { defaultSort, sorting } from "../../../lib/constants"
+import { getCollection, getCollectionProducts } from "../../../lib/shopify"
+import { siteUrl } from "../../../lib/site"
 
 export async function generateMetadata(props: {
   params: Promise<{ collection: string }>
@@ -14,9 +16,20 @@ export async function generateMetadata(props: {
 
   if (!collection) return notFound()
 
+  const canonicalPath = `/search/${params.collection}`;
+
   return {
     title: collection.seo?.title || collection.title,
     description: collection.seo?.description || collection.description || `${collection.title} products`,
+    alternates: {
+      canonical: canonicalPath
+    },
+    openGraph: {
+      type: 'website',
+      url: `${siteUrl}${canonicalPath}`,
+      title: collection.seo?.title || collection.title,
+      description: collection.seo?.description || collection.description || `${collection.title} products`
+    }
   }
 }
 
@@ -46,6 +59,14 @@ export default async function CategoryPage(props: {
               {collection.description}
             </CardDescription>
           )}
+          <div className="flex justify-center">
+            <ShareButton
+              title={collection.title}
+              text={`Browse the ${collection.title} collection`}
+              url={`${siteUrl}/search/${params.collection}`}
+              label="Share Collection"
+            />
+          </div>
         </CardHeader>
       </Card>
 
@@ -58,7 +79,7 @@ export default async function CategoryPage(props: {
           </Card>
         ) : (
           <Grid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
-            <ProductGridItems products={products} />
+            <ProductGridItems products={products} collectionHandle={params.collection} />
           </Grid>
         )}
       </section>

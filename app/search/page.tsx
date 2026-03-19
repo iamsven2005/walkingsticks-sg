@@ -2,10 +2,28 @@ import Grid from '../../components/grid';
 import ProductGridItems from '../../components/layout/product-grid-items';
 import { defaultSort, sorting } from '../../lib/constants';
 import { getProducts } from '../../lib/shopify';
+import { siteUrl } from '../../lib/site';
 
 export const metadata = {
   title: 'Search',
-  description: 'Search for products in the store.'
+  description: 'Browse and search for walking sticks and accessories.',
+  alternates: {
+    canonical: '/search'
+  },
+  keywords: [
+    'search walking sticks singapore',
+    'walking stick products singapore',
+    'walking cane products singapore',
+    'folding cane singapore',
+    'quad cane singapore',
+    'walking accessories singapore'
+  ],
+  openGraph: {
+    type: 'website',
+    url: `${siteUrl}/search`,
+    title: 'Search Walking Sticks',
+    description: 'Browse and search for walking sticks and accessories.'
+  }
 };
 
 export default async function SearchPage(props: {

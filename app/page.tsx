@@ -1,17 +1,38 @@
-import { Card, CardContent } from "../components/ui/card"
+import { ArrowRight, HelpCircle } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
 import { Carousels } from "../components/carousel"
 import { Testimonials } from "../components/grid/testimonial"
 import Footer from "../components/layout/footer"
-import { getCollectionProducts } from "../lib/shopify"
-import Image from "next/image"
-import Link from "next/link"
 import { Button } from "../components/ui/button"
-import { ArrowRight, HelpCircle } from "lucide-react"
+import { Card, CardContent } from "../components/ui/card"
+import { getCollectionProducts } from "../lib/shopify"
+import { siteUrl } from "../lib/site"
 
 export const metadata = {
-  description: "Find all your walking stick needs from Singapore",
+  title: 'Walking Sticks Singapore',
+  description: 'Buy walking sticks, walking canes, and mobility aids in Singapore for daily support and safer movement.',
+  alternates: {
+    canonical: '/'
+  },
+  keywords: [
+    'walking sticks singapore',
+    'walking stick singapore',
+    'walking cane singapore',
+    'buy walking stick singapore',
+    'walking stick shop singapore',
+    'walking stick for elderly singapore',
+    'walking cane for seniors singapore',
+    'medical walking stick singapore',
+    'folding walking stick singapore',
+    'quad cane singapore',
+    'mobility aids singapore'
+  ],
   openGraph: {
     type: "website",
+    url: siteUrl,
+    title: 'Walking Sticks Singapore',
+    description: 'Buy walking sticks, walking canes, and mobility aids in Singapore for daily support and safer movement.',
   },
 }
 
@@ -53,7 +74,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="container mx-auto py-16">
+      <section className="container mx-auto py-16 px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">Find the perfect style, just for you</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

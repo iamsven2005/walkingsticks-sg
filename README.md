@@ -57,7 +57,7 @@ pnpm install
 pnpm dev
 ```
 
-Your app should now be running on [localhost:3000](http://localhost:3000/).
+Your app should now be running on [walkingsticks.sg](http://walkingsticks.sg/).
 
 <details>
   <summary>Expand if you work at Vercel and want to run locally and / or contribute</summary>

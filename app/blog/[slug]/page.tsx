@@ -1,10 +1,13 @@
+import { DrumstickIcon as WalkingStickIcon } from 'lucide-react'
+import { Metadata } from 'next'
+import Image from 'next/image'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import baseUrl from '../../../app/sitemap'
+import { ShareButton } from '../../../components/share/share-button'
+import { Button } from '../../../components/ui/button'
+import { siteUrl } from '../../../lib/site'
 import { CustomMDX } from './mdx'
 import { formatDate, getBlogPosts } from './utils'
-import Image from 'next/image'
-import { Metadata } from 'next'
-import { DrumstickIcon as WalkingStickIcon } from 'lucide-react'
 
 export async function generateStaticParams() {
   let posts = getBlogPosts()
@@ -28,17 +31,21 @@ export function generateMetadata({ params }: any): Metadata {
   } = post.metadata
   let ogImage = image
     ? image
-    : `${baseUrl}/og?title=${encodeURIComponent(title)}`
+    : `${siteUrl}/og?title=${encodeURIComponent(title)}`
+  const canonicalUrl = `${siteUrl}/blog/${post.slug}`;
 
   return {
     title,
     description,
+    alternates: {
+      canonical: canonicalUrl
+    },
     openGraph: {
       title,
       description,
       type: 'article',
       publishedTime,
-      url: `${baseUrl}/blog/${post.slug}`,
+      url: canonicalUrl,
       images: [
         {
           url: ogImage,
@@ -63,6 +70,9 @@ export default function Blog({ params }: any) {
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <Button asChild variant="ghost" size="sm" className="mb-6 px-0 text-sm">
+        <Link href="/blog">← Back to Articles</Link>
+      </Button>
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -75,9 +85,9 @@ export default function Blog({ params }: any) {
             dateModified: post.metadata.publishedAt,
             description: post.metadata.summary,
             image: post.metadata.image
-              ? `${baseUrl}${post.metadata.image}`
+              ? `${siteUrl}${post.metadata.image}`
               : `/og?title=${encodeURIComponent(post.metadata.title)}`,
-            url: `${baseUrl}/blog/${post.slug}`,
+            url: `${siteUrl}/blog/${post.slug}`,
             author: {
               '@type': 'Person',
               name: 'Walking Stick Experts',
@@ -107,6 +117,14 @@ export default function Blog({ params }: any) {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
             {post.metadata.title}
           </h1>
+          <div className="mb-6">
+            <ShareButton
+              title={post.metadata.title}
+              text={`Read this article: ${post.metadata.title}`}
+              url={`${siteUrl}/blog/${post.slug}`}
+              label="Share Article"
+            />
+          </div>
           <div className="prose dark:prose-invert max-w-none">
             <CustomMDX source={post.content} />
           </div>

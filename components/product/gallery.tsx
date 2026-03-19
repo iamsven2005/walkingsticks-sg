@@ -1,17 +1,19 @@
 "use client"
 
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline"
-import { GridTileImage } from "../../components/grid/tile"
-import { useProduct, useUpdateURL } from "../../components/product/product-context"
-import Image from "next/image"
-import { useState, useCallback, useEffect, useTransition } from "react"
 import useEmblaCarousel from "embla-carousel-react"
+import Image from "next/image"
+import { useCallback, useEffect, useState, useTransition } from "react"
+import { GridTileImage } from "../../components/grid/tile"
+import { ImageZoomModal } from "../../components/product/image-zoom-modal"
+import { useProduct, useUpdateURL } from "../../components/product/product-context"
 
 export function Gallery({ images }: { images: { src: string; altText: string }[] }) {
   const { state, updateImage } = useProduct()
   const updateURL = useUpdateURL()
   const [selectedIndex, setSelectedIndex] = useState(state.image ? Number.parseInt(state.image) : 0)
   const [isPending, startTransition] = useTransition()
+  const [zoomedImageIndex, setZoomedImageIndex] = useState<number | null>(null)
 
   // Remove autoplay to prevent video reloading
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
@@ -48,9 +50,13 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
       <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden" ref={emblaRef}>
         <div className="flex h-full">
           {images.map((image, index) => (
-            <div key={image.src} className="relative h-full w-full flex-[0_0_100%]">
+            <div 
+              key={image.src} 
+              className="relative h-full w-full flex-[0_0_100%] cursor-pointer group"
+              onClick={() => setZoomedImageIndex(index)}
+            >
               <Image
-                className="h-full w-full object-contain"
+                className="h-full w-full object-contain group-hover:opacity-90 transition-opacity"
                 fill
                 sizes="(min-width: 1024px) 66vw, 100vw"
                 alt={image.altText as string}
@@ -94,6 +100,14 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
           })}
         </ul>
       ) : null}
+
+      {zoomedImageIndex !== null && (
+        <ImageZoomModal
+          isOpen={zoomedImageIndex !== null}
+          onClose={() => setZoomedImageIndex(null)}
+          image={images[zoomedImageIndex]}
+        />
+      )}
     </div>
   )
 }

@@ -1,8 +1,9 @@
-import CartModal from '../../../components/cart/modal';
-import { getMenu } from '../../../lib/shopify';
-import { Menu } from '../../../lib/shopify/types';
 import Link from 'next/link';
 import { Suspense } from 'react';
+import CartModal from '../../../components/cart/modal';
+import { WishlistIcon } from '../../../components/wishlist/wishlist-icon';
+import { getMenu } from '../../../lib/shopify';
+import { Menu } from '../../../lib/shopify/types';
 import MobileMenu from './mobile-menu';
 import Search, { SearchSkeleton } from './search';
 
@@ -51,7 +52,8 @@ export async function Navbar() {
           </Suspense>
         </div>
 
-        <div className="flex justify-end md:w-1/3">
+        <div className="flex justify-end md:w-1/3 gap-2">
+          <WishlistIcon />
           <CartModal />
         </div>
       </div>

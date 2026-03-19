@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
+import { Suspense } from 'react';
 import Footer from '../../../components/layout/footer';
 import { Gallery } from '../../../components/product/gallery';
 import { ProductProvider } from '../../../components/product/product-context';
 import { ProductDescription } from '../../../components/product/product-description';
 import { HIDDEN_PRODUCT_TAG } from '../../../lib/constants';
-import { getProduct, getProductRecommendations } from '../../../lib/shopify';
-import { Suspense } from 'react';
+import { getCollection, getProduct, getProductRecommendations } from '../../../lib/shopify';
+import { siteUrl } from '../../../lib/site';
 import { Carousel } from './Carousel';
 
 export async function generateMetadata(props: {
@@ -47,11 +48,21 @@ export async function generateMetadata(props: {
   };
 }
 
-export default async function ProductPage(props: { params: Promise<{ handle: string }> }) {
+export default async function ProductPage(props: {
+  params: Promise<{ handle: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   const params = await props.params;
+  const searchParams = await props.searchParams;
   const product = await getProduct(params.handle);
 
   if (!product) return notFound();
+
+  const collectionParam = searchParams?.collection;
+  const collectionHandle = Array.isArray(collectionParam) ? collectionParam[0] : collectionParam;
+  const collection = collectionHandle ? await getCollection(collectionHandle) : undefined;
+  const backToCollectionPath = collection?.handle ? `/search/${collection.handle}` : undefined;
+  const backToCollectionLabel = collection?.title || undefined;
 
   const productJsonLd = {
     '@context': 'https://schema.org',
@@ -102,7 +113,12 @@ export default async function ProductPage(props: { params: Promise<{ handle: str
 
           <div className="basis-full lg:basis-2/6">
             <Suspense fallback={null}>
-              <ProductDescription product={product} />
+              <ProductDescription
+                product={product}
+                shareUrl={`${siteUrl}/products/${product.handle}`}
+                backToCollectionPath={backToCollectionPath}
+                backToCollectionLabel={backToCollectionLabel}
+              />
             </Suspense>
           </div>
         </div>

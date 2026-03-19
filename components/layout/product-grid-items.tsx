@@ -1,16 +1,26 @@
+import Link from 'next/link';
 import Grid from '../../components/grid';
 import { GridTileImage } from '../../components/grid/tile';
 import { Product } from '../../lib/shopify/types';
-import Link from 'next/link';
 
-export default function ProductGridItems({ products }: { products: Product[] }) {
+export default function ProductGridItems({
+  products,
+  collectionHandle
+}: {
+  products: Product[];
+  collectionHandle?: string;
+}) {
   return (
     <>
       {products.map((product) => (
         <Grid.Item key={product.handle} className="animate-fadeIn">
           <Link
             className="relative inline-block h-full w-full"
-            href={`/products/${product.handle}`}
+            href={
+              collectionHandle
+                ? `/products/${product.handle}?collection=${encodeURIComponent(collectionHandle)}`
+                : `/products/${product.handle}`
+            }
             prefetch={true}
           >
             <GridTileImage
