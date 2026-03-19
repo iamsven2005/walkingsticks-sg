@@ -21,10 +21,25 @@ export async function generateMetadata(props: {
 
   const { url, width, height, altText: alt } = product.featuredImage || {};
   const indexable = !product.tags.includes(HIDDEN_PRODUCT_TAG);
+  const canonicalPath = `/products/${product.handle}`;
+  const productName = (product.seo.title || product.title).toLowerCase();
+  const productDescription = product.seo.description || product.description;
 
   return {
     title: product.seo.title || product.title,
-    description: product.seo.description || product.description,
+    description: productDescription,
+    keywords: [
+      `${productName} singapore`,
+      `buy ${productName} singapore`,
+      `${productName} walking stick`,
+      `${productName} walking cane`,
+      'walking stick singapore',
+      'walking cane singapore',
+      'mobility aids singapore'
+    ],
+    alternates: {
+      canonical: canonicalPath
+    },
     robots: {
       index: indexable,
       follow: indexable,
@@ -33,18 +48,24 @@ export async function generateMetadata(props: {
         follow: indexable
       }
     },
-    openGraph: url
-      ? {
-          images: [
-            {
-              url,
-              width,
-              height,
-              alt
-            }
-          ]
-        }
-      : null
+    openGraph: {
+      type: 'website',
+      url: `${siteUrl}${canonicalPath}`,
+      title: product.seo.title || product.title,
+      description: productDescription,
+      ...(url
+        ? {
+            images: [
+              {
+                url,
+                width,
+                height,
+                alt
+              }
+            ]
+          }
+        : {})
+    }
   };
 }
 

@@ -17,10 +17,20 @@ export async function generateMetadata(props: {
   if (!collection) return notFound()
 
   const canonicalPath = `/search/${params.collection}`;
+  const collectionName = (collection.seo?.title || collection.title).toLowerCase();
 
   return {
     title: collection.seo?.title || collection.title,
     description: collection.seo?.description || collection.description || `${collection.title} products`,
+    keywords: [
+      `${collectionName} singapore`,
+      `${collectionName} walking stick singapore`,
+      `buy ${collectionName} singapore`,
+      `${collectionName} mobility aid singapore`,
+      'walking sticks singapore',
+      'walking cane singapore',
+      'mobility aids singapore'
+    ],
     alternates: {
       canonical: canonicalPath
     },
