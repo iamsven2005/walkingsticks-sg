@@ -1,55 +1,55 @@
-import { HIDDEN_PRODUCT_TAG, SHOPIFY_GRAPHQL_API_ENDPOINT, TAGS } from '../../lib/constants';
-import { isShopifyError } from '../../lib/type-guards';
-import { ensureStartsWith } from '../../lib/utils';
 import { revalidateTag } from 'next/cache';
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
+import { HIDDEN_PRODUCT_TAG, SHOPIFY_GRAPHQL_API_ENDPOINT, TAGS } from '../../lib/constants';
+import { isShopifyError } from '../../lib/type-guards';
+import { ensureStartsWith } from '../../lib/utils';
 import {
-  addToCartMutation,
-  createCartMutation,
-  editCartItemsMutation,
-  removeFromCartMutation
+    addToCartMutation,
+    createCartMutation,
+    editCartItemsMutation,
+    removeFromCartMutation
 } from './mutations/cart';
+import { getBlogQuery, getBlogsQuery } from './queries/blog';
 import { getCartQuery } from './queries/cart';
 import {
-  getCollectionProductsQuery,
-  getCollectionQuery,
-  getCollectionsQuery
+    getCollectionProductsQuery,
+    getCollectionQuery,
+    getCollectionsQuery
 } from './queries/collection';
 import { getMenuQuery } from './queries/menu';
 import { getPageQuery, getPagesQuery } from './queries/page';
 import {
-  getProductQuery,
-  getProductRecommendationsQuery,
-  getProductsQuery
+    getProductQuery,
+    getProductRecommendationsQuery,
+    getProductsQuery
 } from './queries/product';
 import {
-  Cart,
-  Collection,
-  Connection,
-  Image,
-  Menu,
-  Page,
-  Product,
-  ShopifyAddToCartOperation,
-  ShopifyCart,
-  ShopifyCartOperation,
-  ShopifyCollection,
-  ShopifyCollectionOperation,
-  ShopifyCollectionProductsOperation,
-  ShopifyCollectionsOperation,
-  ShopifyCreateCartOperation,
-  ShopifyMenuOperation,
-  ShopifyPageOperation,
-  ShopifyPagesOperation,
-  ShopifyProduct,
-  ShopifyProductOperation,
-  ShopifyProductRecommendationsOperation,
-  ShopifyProductsOperation,
-  ShopifyRemoveFromCartOperation,
-  ShopifyUpdateCartOperation
+    Cart,
+    Collection,
+    Connection,
+    Image,
+    Menu,
+    Page,
+    Product,
+    ShopifyAddToCartOperation,
+    ShopifyCart,
+    ShopifyCartOperation,
+    ShopifyCollection,
+    ShopifyCollectionOperation,
+    ShopifyCollectionProductsOperation,
+    ShopifyCollectionsOperation,
+    ShopifyCreateCartOperation,
+    ShopifyMenuOperation,
+    ShopifyPageOperation,
+    ShopifyPagesOperation,
+    ShopifyProduct,
+    ShopifyProductOperation,
+    ShopifyProductRecommendationsOperation,
+    ShopifyProductsOperation,
+    ShopifyRemoveFromCartOperation,
+    ShopifyUpdateCartOperation
 } from './types';
-import { getBlogQuery, getBlogsQuery } from './queries/blog';
 
 const domain = process.env.SHOPIFY_STORE_DOMAIN
   ? ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://')
@@ -306,7 +306,6 @@ export async function getCollectionProducts({
   });
 
   if (!res.body.data.collection) {
-    console.log(`No collection found for \`${collection}\``);
     return [];
   }
 
@@ -452,7 +451,6 @@ export async function revalidate(req: NextRequest): Promise<NextResponse> {
   const isProductUpdate = productWebhooks.includes(topic);
 
   if (!secret || secret !== process.env.SHOPIFY_REVALIDATION_SECRET) {
-    console.error('Invalid revalidation secret.');
     return NextResponse.json({ status: 401 });
   }
 

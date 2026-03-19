@@ -49,8 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     fetchedRoutes = (
       await Promise.all([collectionsPromise, productsPromise, pagesPromise, blogPostsPromise])
     ).flat();
-  } catch (error) {
-    console.error('Failed to build sitemap routes', error);
+  } catch {
     fetchedRoutes = [];
   }
 

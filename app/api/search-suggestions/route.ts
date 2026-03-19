@@ -19,8 +19,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     }));
 
     return NextResponse.json({ suggestions });
-  } catch (error) {
-    console.error('Failed to load search suggestions', error);
+  } catch {
     return NextResponse.json({ suggestions: [] }, { status: 200 });
   }
 }

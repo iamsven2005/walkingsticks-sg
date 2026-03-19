@@ -2,11 +2,11 @@
 
 import type React from "react"
 
-import { useState, useRef, useEffect } from "react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import Image from "next/image"
+import { useEffect, useRef, useState } from "react"
 import { Card, CardContent } from "../..//components/ui/card"
 import { Button } from "../../components/ui/button"
-import { ChevronLeft, ChevronRight } from "lucide-react"
 import ProductDetail from "./product-detail"
 
 
@@ -218,13 +218,11 @@ const productCode = rawCode === "medium-carbonquad-mp3" ? "medium-carbon-quad-mp
       try {
         const res = await fetch(`/api/${productCode}`)
         const data = await res.json()
-        console.log("API Response for productCode:", data)
 
         setSelectedProductData(data)
 
 
       } catch (err) {
-        console.error("Error fetching product code info:", err)
       } finally {
         setIsLoading(false)
       }

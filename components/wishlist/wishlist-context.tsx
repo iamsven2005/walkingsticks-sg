@@ -34,8 +34,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
       if (stored) {
         setWishlist(JSON.parse(stored));
       }
-    } catch (error) {
-      console.error('Failed to load wishlist from localStorage:', error);
+    } catch {
     }
     setIsLoaded(true);
   }, []);
@@ -45,8 +44,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     if (isLoaded) {
       try {
         localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlist));
-      } catch (error) {
-        console.error('Failed to save wishlist to localStorage:', error);
+      } catch {
       }
     }
   }, [wishlist, isLoaded]);

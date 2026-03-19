@@ -1,10 +1,10 @@
 'use server';
 
-import { TAGS } from '../../lib/constants';
-import { addToCart, createCart, getCart, removeFromCart, updateCart } from '../../lib/shopify';
 import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { TAGS } from '../../lib/constants';
+import { addToCart, createCart, getCart, removeFromCart, updateCart } from '../../lib/shopify';
 
 export async function addItem(prevState: any, selectedVariantId: string | undefined) {
   let cartId = (await cookies()).get('cartId')?.value;
@@ -91,7 +91,6 @@ export async function updateItemQuantity(
 
     revalidateTag(TAGS.cart);
   } catch (e) {
-    console.error(e);
     return 'Error updating item quantity';
   }
 }
